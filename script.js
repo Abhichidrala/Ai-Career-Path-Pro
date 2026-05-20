@@ -128,7 +128,12 @@ return"Foundational knowledge developing. Start with Data Analyst role and build
 
 function renderQuestion(){
 const q=state.questions[state.index];if(!q)return;
-$('questionNumber').textContent=`Question ${state.certMode?state.certTotalAnswered+state.index+1:state.index+1}`;
+const isLocked = state.certMode && (state.answers[state.index] !== undefined);
+let qNumText = `Question ${state.certMode?state.certTotalAnswered+state.index+1:state.index+1}`;
+if (isLocked) {
+  qNumText += state.answers[state.index] === null ? " — SKIPPED (LOCKED)" : " — ANSWERED (LOCKED)";
+}
+$('questionNumber').textContent=qNumText;
 $('questionText').textContent=q.title||'Question';
 const total=state.questions.length;
 $('quizCounter').textContent=state.certMode?`Batch ${state.certBatchNum} · ${state.index+1}/${total}`:`${state.index+1}/${total}`;
@@ -136,9 +141,19 @@ $('quizProgressBar').style.width=`${((state.index+1)/total)*100}%`;
 const ol=$('optionsList');ol.innerHTML='';const letters=['A','B','C','D','E','F'];
 q.options.forEach((opt,i)=>{const btn=document.createElement('button');btn.className='option-btn';
 if(state.answers[state.index]===i)btn.classList.add('selected');
+if(isLocked)btn.disabled=true;
 btn.innerHTML=`<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
-btn.addEventListener('click',()=>selectAnswer(i));ol.appendChild(btn);});
-$('explanationBox').classList.add('hidden');
+if(!isLocked)btn.addEventListener('click',()=>selectAnswer(i));
+ol.appendChild(btn);});
+
+const expBox=$('explanationBox');
+if(state.answers[state.index] !== null && state.answers[state.index] !== undefined) {
+expBox.classList.remove('hidden');
+expBox.textContent = q.explanation || '⏳ Loading explanation...';
+} else {
+expBox.classList.add('hidden');
+}
+
 $('prevBtn').style.visibility=state.index===0?'hidden':'visible';
 $('nextBtn').textContent=state.index===total-1?(state.certMode?'Submit Batch ✓':'Finish ✓'):'Next →';
 // Update cert streak
@@ -157,12 +172,28 @@ $('giveUpBtn')?.classList.add('hidden');
 }
 
 async function selectAnswer(i){
+if(state.certMode && state.answers[state.index] !== undefined) return;
 const q=state.questions[state.index];state.answers[state.index]=i;
+
+const expBox=$('explanationBox');
+expBox.classList.remove('hidden');
+if(q.explanation){
+expBox.textContent=q.explanation;
+}else{
+expBox.textContent='⏳ Loading explanation...';
+fetchExplanation(q.title,q.options[i],q.options[q.correct]).then(exp=>{
+q.explanation=exp;
+if(state.questions[state.index]===q){
+expBox.textContent=exp;
+}
+});
+}
+
+if(state.certMode){
+renderQuestion();
+}else{
 document.querySelectorAll('.option-btn').forEach((btn,j)=>btn.classList.toggle('selected',j===i));
-const expBox=$('explanationBox');expBox.classList.remove('hidden');
-if(q.explanation){expBox.textContent=q.explanation;}
-else{expBox.textContent='⏳ Loading explanation...';const exp=await fetchExplanation(q.title,q.options[i],q.options[q.correct]);expBox.textContent=exp;q.explanation=exp;}
-if(state.certMode)renderQuestion();// update streak
+}
 }
 
 // Certification adaptive algorithm
@@ -417,3 +448,16 @@ doc.save(`${state.name.replace(/\s+/g,'_')}_AI_Career_Certificate.pdf`);
 });
 
 showSection('hero');
+
+// Dismiss Intro Screen
+(function() {
+    const intro = $('intro-screen');
+    if (intro) {
+        setTimeout(() => {
+            intro.classList.add('fade-out');
+            setTimeout(() => {
+                intro.remove();
+            }, 600);
+        }, 2200);
+    }
+})();
