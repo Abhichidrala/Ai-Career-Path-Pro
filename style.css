@@ -159,10 +159,18 @@ body {
 }
 .btn:hover::before { opacity:1; }
 .btn-primary {
-  background:linear-gradient(135deg,var(--accent),#8b5cf6);
-  color:#fff; box-shadow:0 4px 24px var(--accent-glow);
+  background:rgba(255,255,255,0.05);
+  color:var(--text);
+  border:1px solid var(--glass-border);
+  box-shadow:none;
 }
-.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 36px rgba(99,102,241,0.35); }
+
+.btn-primary:hover {
+  background:rgba(255,255,255,0.1);
+  transform:translateY(-2px);
+  box-shadow:none;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 36px rgba(0, 0, 0, 0); }
 .btn-secondary {
   background:rgba(255,255,255,0.05); color:var(--text);
   border:1px solid var(--glass-border);
