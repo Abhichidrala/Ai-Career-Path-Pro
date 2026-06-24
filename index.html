@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark" data-accent="holographic">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,8 +8,7 @@
     <!-- Primary SEO -->
     <title>AI Career Path Pro | AI Jobs, Resume ATS, ML Careers & Roadmaps</title>
 
-    <meta name="title"
-        content="AI Career Path Pro | AI Jobs, Resume ATS, ML Careers & Roadmaps">
+    <meta name="title" content="AI Career Path Pro | AI Jobs, Resume ATS, ML Careers & Roadmaps">
 
     <meta name="description"
         content="AI-powered career platform for students and professionals. Explore AI jobs, Machine Learning careers, Data Analytics roles, ATS resume analysis, AI roadmaps, certifications, mock interviews, and career growth tools.">
@@ -23,48 +23,35 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website">
 
-    <meta property="og:title"
-        content="AI Career Path Pro — Your AI-Powered Career Growth Platform">
+    <meta property="og:title" content="AI Career Path Pro — Your AI-Powered Career Growth Platform">
 
     <meta property="og:description"
         content="Discover AI jobs, ML careers, ATS resume analysis, AI roadmaps, certifications, mock interviews, and personalized career guidance.">
 
-    <meta property="og:image"
-        content="https://ai-career-path-pro.onrender.com/banner.png">
+    <meta property="og:image" content="https://ai-career-path-pro.onrender.com/banner.png">
 
-    <meta property="og:url"
-        content="https://ai-career-path-pro.onrender.com/">
+    <meta property="og:url" content="https://ai-career-path-pro.onrender.com/">
 
-    <meta property="og:site_name"
-        content="AI Career Path Pro">
+    <meta property="og:site_name" content="AI Career Path Pro">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
 
-    <meta name="twitter:title"
-        content="AI Career Path Pro | AI Jobs & Resume ATS">
+    <meta name="twitter:title" content="AI Career Path Pro | AI Jobs & Resume ATS">
 
     <meta name="twitter:description"
         content="AI-powered platform for AI jobs, resume ATS analysis, AI roadmaps, mock interviews, and career growth.">
 
-    <meta name="twitter:image"
-        content="https://ai-career-path-pro.onrender.com/banner.png">
+    <meta name="twitter:image" content="https://ai-career-path-pro.onrender.com/banner.png">
 
     <!-- Browser -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Canonical -->
-    <link rel="canonical"
-        href="https://ai-career-path-pro.onrender.com/">
+    <link rel="canonical" href="https://ai-career-path-pro.onrender.com/">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
@@ -89,111 +76,220 @@
     </script>
 
 </head>
+
 <body>
-    <!-- ===== Splash Screen Intro ===== -->
+
+    <!-- ===== Splash Screen ===== -->
     <div id="intro-screen">
-        <div class="intro-content">
-            <div class="intro-logo-wrap">
-                <img src="favicon.png" alt="AI Logo" class="intro-logo">
+        <img src="logo.png" class="intro-logo" alt="AI Career Path Logo" aria-hidden="true" />
+        <h1 class="intro-title">AI Career Path</h1>
+        <p class="intro-sub">Discover Your Future</p>
+        <div class="intro-loader">
+            <div class="intro-progress"></div>
+        </div>
+    </div>
+
+    <!-- ===== Mesh Gradient Background ===== -->
+    <div class="mesh-bg" aria-hidden="true"></div>
+
+    <!-- ===== Floating Island Navbar ===== -->
+    <nav class="nav-island" id="navIsland" role="navigation" aria-label="Main navigation">
+        <a class="nav-brand" href="#" id="homeLink" aria-label="AI Career Path Home">
+            <img src="logo.png" class="nav-logo-img" alt="Logo" aria-hidden="true" />
+            <span class="nav-brand-text">AI Career Path</span>
+        </a>
+        <div class="nav-divider" aria-hidden="true"></div>
+        <div class="nav-links">
+            <button class="nav-link active" data-section="hero" id="navHome" aria-label="Home">Home</button>
+            <button class="nav-link" data-section="features" id="navFeatures" aria-label="Features">Features</button>
+            <button class="nav-link" data-section="about" id="navAbout" aria-label="About">About</button>
+        </div>
+        <button class="nav-settings-btn" id="settingsToggle" aria-label="Settings" title="Settings">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" />
+                <path
+                    d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+        </button>
+    </nav>
+
+    <!-- ===== Settings Overlay ===== -->
+    <div class="settings-overlay" id="settingsOverlay">
+        <div class="settings-panel" id="settingsPanel" role="dialog" aria-label="Settings">
+            <div class="settings-title">Settings</div>
+
+            <!-- Theme -->
+            <div class="settings-group">
+                <span class="settings-group-label">Appearance</span>
+                <div class="theme-toggle">
+                    <button class="theme-toggle-btn" data-theme-val="light" id="themeLightBtn">☀ Light</button>
+                    <button class="theme-toggle-btn active" data-theme-val="dark" id="themeDarkBtn">◑ Dark</button>
+                </div>
             </div>
-            <h1 class="intro-title">AI Career Path</h1>
-            <p class="intro-subtitle">Discover Your Future in AI</p>
-            <div class="intro-loader">
-                <div class="intro-progress"></div>
+
+            <!-- Accent -->
+            <div class="settings-group">
+                <span class="settings-group-label">Prism Theme</span>
+                <div class="accent-options">
+                    <div class="accent-swatch active" data-accent="holographic" title="Holographic" role="button"
+                        tabindex="0" aria-label="Holographic theme"></div>
+                    <div class="accent-swatch" data-accent="aurora" title="Aurora" role="button" tabindex="0"
+                        aria-label="Aurora theme"></div>
+                    <div class="accent-swatch" data-accent="solar" title="Solar" role="button" tabindex="0"
+                        aria-label="Solar theme"></div>
+                    <div class="accent-swatch" data-accent="phantom" title="Phantom" role="button" tabindex="0"
+                        aria-label="Phantom theme"></div>
+                </div>
+            </div>
+
+            <!-- Sound -->
+            <div class="settings-group">
+                <span class="settings-group-label">Audio</span>
+                <div class="toggle-row">
+                    <span class="toggle-label">Sound Effects</span>
+                    <div class="toggle-switch active" id="soundToggle" role="switch" aria-checked="true" tabindex="0"
+                        aria-label="Toggle sound effects"></div>
+                </div>
+            </div>
+
+            <!-- Admin Portal -->
+            <div class="settings-group"
+                style="margin-top: var(--s-5); border-top: 1px solid var(--surface-border); padding-top: var(--s-4);">
+                <button class="btn btn-secondary btn-sm" id="adminPortalOpenBtn" style="width: 100%;">⚙ Admin
+                    Portal</button>
             </div>
         </div>
     </div>
 
-    <canvas id="bgCanvas"></canvas>
-    <div class="app-wrap">
-
-        <!-- ===== Navbar ===== -->
-        <nav class="navbar" id="navbar">
-            <div class="container">
-                <a class="nav-brand" href="#" id="homeLink">
-                    <div class="nav-logo">AI</div>
-                    <div>
-                        <div class="nav-title">AI Career Path</div>
-                        <div class="nav-tag">Think · Click · Learn</div>
-                    </div>
-                </a>
-                <div class="nav-links">
-                    <button class="nav-link active" data-section="hero" id="navHome">Home</button>
-                    <button class="nav-link" data-section="features" id="navFeatures">Features</button>
-                    <button class="nav-link" data-section="about" id="navAbout">About</button>
+    <!-- ===== Hero Section ===== -->
+    <section class="hero-section" id="heroSection">
+        <div class="hero-container">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    Powered by Google Gemini AI
                 </div>
-            </div>
-        </nav>
-
-        <!-- ===== Hero Section ===== -->
-        <section class="hero" id="heroSection">
-            <div class="hero-content">
-                <div class="hero-badge">✦ Powered by Google Gemini AI</div>
-                <h1>Discover Your Perfect <span class="gradient-text">AI Career Path</span></h1>
-                <p>Take an AI-generated assessment tailored to your skill level. Get personalized career recommendations and earn a professional certificate.</p>
-                <div class="hero-stats">
-                    <div class="stat-pill"><span class="stat-num">6</span> AI Roles</div>
-                    <div class="stat-pill"><span class="stat-num">3</span> Difficulty Levels</div>
-                    <div class="stat-pill"><span class="stat-num">∞</span> AI Questions</div>
-                </div>
-                <div class="hero-actions">
-                    <button class="btn btn-primary" id="heroStartBtn">
-                        <span>🚀</span> Start Assessment
+                <h1 class="hero-title">
+                    Discover Your<br>Perfect <span class="title-accent">AI Career Path</span>
+                </h1>
+                <p class="hero-description">
+                    Take an AI-generated assessment tailored to your skill level. Get personalized career
+                    recommendations and earn a professional certificate.
+                </p>
+                <div class="hero-cta">
+                    <button class="btn btn-primary btn-lg" id="heroStartBtn">
+                        → Start Assessment
                     </button>
-                    <button class="btn btn-secondary" id="heroCertBtn">
-                        <span>🏆</span> Certification Mode
+                    <button class="btn btn-secondary btn-lg" id="heroCertBtn">
+                        ◆ Certification Mode
                     </button>
                     <button class="btn btn-ghost" id="heroLearnBtn">
-                        <span>📖</span> Learn More
+                        Learn More ↓
                     </button>
                 </div>
-            </div>
-        </section>
-
-        <!-- ===== Features Section ===== -->
-        <section class="features-section" id="featuresSection">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Why AI Career Path?</h2>
-                    <p>A smarter way to assess your AI readiness and plan your career trajectory</p>
+                <div class="hero-stats">
+                    <div class="stat-orb">
+                        <span class="stat-value">6</span>
+                        <span class="stat-label">AI Roles</span>
+                    </div>
+                    <div class="stat-orb">
+                        <span class="stat-value">3</span>
+                        <span class="stat-label">Levels</span>
+                    </div>
+                    <div class="stat-orb">
+                        <span class="stat-value">∞</span>
+                        <span class="stat-label">Questions</span>
+                    </div>
                 </div>
-                <div class="features-grid">
-                    <div class="feature-card fade-in">
-                        <div class="feature-icon purple">🤖</div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+                <div class="prism-visual">
+                    <img src="logo.png" class="prism-logo-img" alt="Prism Core Logo" />
+                    <div class="prism-ring"></div>
+                    <div class="prism-ring"></div>
+                    <div class="prism-ring"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Features Section ===== -->
+    <section class="features-section" id="featuresSection">
+        <div class="features-container">
+            <div class="section-header">
+                <h2>Why AI Career Path?</h2>
+                <p>A smarter way to assess your AI readiness and plan your career trajectory</p>
+            </div>
+            <div class="features-stagger">
+                <div class="feature-row reveal">
+                    <div class="feature-card">
+                        <div class="feature-num">01</div>
+                        <div class="feature-icon-orb violet">⬡</div>
                         <h3>AI-Generated Questions</h3>
-                        <p>Dynamic questions crafted by Google Gemini AI, tailored to your chosen role and difficulty level.</p>
+                        <p>Dynamic questions crafted by Google Gemini AI, tailored to your chosen role and difficulty
+                            level.</p>
                     </div>
-                    <div class="feature-card fade-in fade-in-d1">
-                        <div class="feature-icon green">📊</div>
+                    <div class="feature-spacer"></div>
+                </div>
+                <div class="feature-row reveal">
+                    <div class="feature-card">
+                        <div class="feature-num">02</div>
+                        <div class="feature-icon-orb teal">◈</div>
                         <h3>Instant Analytics</h3>
-                        <p>Get detailed performance breakdowns with score analysis and personalized career recommendations.</p>
+                        <p>Get detailed performance breakdowns with score analysis and personalized career
+                            recommendations.</p>
                     </div>
-                    <div class="feature-card fade-in fade-in-d2">
-                        <div class="feature-icon amber">🏆</div>
+                    <div class="feature-spacer"></div>
+                </div>
+                <div class="feature-row reveal">
+                    <div class="feature-card">
+                        <div class="feature-num">03</div>
+                        <div class="feature-icon-orb gold">◇</div>
                         <h3>Professional Certificate</h3>
-                        <p>Complete the certification assessment (50+ adaptive questions) to earn a verified PDF certificate.</p>
+                        <p>Complete the certification assessment with 50+ adaptive questions to earn a verified PDF
+                            certificate.</p>
                     </div>
-                    <div class="feature-card fade-in fade-in-d3">
-                        <div class="feature-icon rose-icon">🧠</div>
+                    <div class="feature-spacer"></div>
+                </div>
+                <div class="feature-row reveal">
+                    <div class="feature-card">
+                        <div class="feature-num">04</div>
+                        <div class="feature-icon-orb pink">△</div>
                         <h3>Adaptive Algorithm</h3>
-                        <p>Our certification mode adapts to your skill level — more correct answers mean more challenging questions.</p>
+                        <p>Our certification mode adapts to your skill level — more correct answers mean more
+                            challenging questions.</p>
                     </div>
+                    <div class="feature-spacer"></div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- ===== Setup Section ===== -->
-        <section class="setup-section hidden" id="setupSection">
-            <div class="setup-card glass-card container">
-                <h2>Configure Your Assessment</h2>
-                <p class="subtitle">Tell us about yourself to personalize your experience</p>
+    <!-- ===== Setup Section ===== -->
+    <section class="setup-section hidden" id="setupSection">
+        <div class="setup-container">
+            <div class="setup-card">
+                <div class="setup-header">
+                    <h2>Configure Assessment</h2>
+                    <p>Tell us about yourself to personalize your experience</p>
+                </div>
                 <div class="form-group">
                     <label for="nameInput">Full Name</label>
-                    <input class="form-input" id="nameInput" placeholder="Enter your full name" />
+                    <input class="form-input" id="nameInput" placeholder="Enter your full name" autocomplete="name" />
                 </div>
-                <div class="form-group">
-                    <label for="emailInput">Email (optional)</label>
-                    <input class="form-input" id="emailInput" placeholder="you@example.com" />
+                <div class="form-group" id="emailGroup">
+                    <label for="emailInput" id="emailLabel">Email <span id="emailOptional">(optional)</span><span
+                            id="emailRequired" class="hidden" style="color: var(--error); font-weight: 700;">
+                            *REQUIRED</span></label>
+                    <input class="form-input" id="emailInput" placeholder="you@example.com" type="email"
+                        autocomplete="email" />
+                    <div class="form-hint hidden" id="emailCertHint" style="color: var(--accent-text);">
+                        <span>◆</span> Email is required in Certification Mode — your certificate will be sent here
+                    </div>
+                    <div class="form-hint hidden" id="emailError" style="color: var(--error);">
+                        <span>✗</span> Please enter a valid email address to proceed
+                    </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -225,188 +321,431 @@
                         <option value="20">20 Questions (Comprehensive)</option>
                     </select>
                     <div class="form-hint" id="noCertHint">
-                        <span>ℹ️</span> Certificate is only available in Certification Mode (50+ questions)
+                        <span>ⓘ</span> Certificate is only available in Certification Mode (50+ questions)
                     </div>
                 </div>
 
                 <!-- Certification Mode Info -->
                 <div class="cert-mode-info hidden" id="certModeInfo">
-                    <div class="cert-mode-badge">🏆 CERTIFICATION MODE</div>
-                    <p>You will answer a <strong>minimum of 50 questions</strong>. The algorithm adapts based on your performance — the better you do, the more questions you'll face. Prove your expertise to earn the certificate!</p>
+                    <div class="cert-mode-badge">CERTIFICATION MODE</div>
+                    <p>You will answer a <strong>minimum of 50 questions</strong>. The algorithm adapts based on your
+                        performance — the better you do, the more questions you'll face.</p>
                     <div class="cert-mode-rules">
                         <div class="cert-rule"><span>✓</span> Minimum 50 questions</div>
-                        <div class="cert-rule"><span>✓</span> Adaptive difficulty scaling</div>
-                        <div class="cert-rule"><span>✓</span> 70% minimum score to pass</div>
+                        <div class="cert-rule"><span>✓</span> Adaptive difficulty</div>
+                        <div class="cert-rule"><span>✓</span> 70% minimum to pass</div>
                         <div class="cert-rule"><span>✓</span> Verified PDF certificate</div>
                     </div>
                 </div>
 
-                <div style="margin-top:24px; display:flex; gap:12px;">
-                    <button class="btn btn-primary" id="beginQuizBtn">🎯 Begin Assessment</button>
-                    <button class="btn btn-ghost" id="backFromSetup">← Back</button>
+                <div class="setup-actions">
+                    <button class="btn btn-primary" id="beginQuizBtn">
+                        Begin Assessment →
+                    </button>
+                    <button class="btn btn-ghost" id="backFromSetup">
+                        ← Back
+                    </button>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- ===== Loading Section ===== -->
-        <section class="hidden" id="loadingSection">
-            <div class="loader-wrap">
-                <div class="loader"></div>
-                <div class="loader-text" id="loadingText">Generating AI-powered questions...</div>
-            </div>
-        </section>
+    <!-- ===== Loading Section ===== -->
+    <section class="loading-section hidden" id="loadingSection">
+        <div class="loader-wrap">
+            <div class="loader"></div>
+            <div class="loader-text" id="loadingText">Generating AI-powered questions...</div>
+        </div>
+    </section>
 
-        <!-- ===== Quiz Section ===== -->
-        <section class="quiz-section hidden" id="quizSection">
-            <div class="quiz-container">
-                <div class="glass-card">
-                    <div class="quiz-topbar">
-                        <div class="quiz-user">
-                            <span class="quiz-user-name" id="quizUserName">Candidate</span>
-                            <span class="quiz-user-meta" id="quizUserMeta">—</span>
+    <!-- ===== Quiz Section ===== -->
+    <section class="quiz-section hidden" id="quizSection">
+        <div class="quiz-container">
+            <div class="quiz-panel">
+                <div class="quiz-topbar">
+                    <div class="quiz-user">
+                        <span class="quiz-user-name" id="quizUserName">Candidate</span>
+                        <span class="quiz-user-meta" id="quizUserMeta">—</span>
+                    </div>
+                    <div class="quiz-status">
+                        <span class="quiz-timer" id="quizTimer">00:00</span>
+                        <div class="quiz-progress-wrap">
+                            <div class="quiz-progress-bar" id="quizProgressBar"></div>
                         </div>
-                        <div class="quiz-status">
-                            <span class="quiz-timer" id="quizTimer">00:00</span>
-                            <div class="quiz-progress-wrap">
-                                <div class="quiz-progress-bar" id="quizProgressBar"></div>
+                        <span class="quiz-counter" id="quizCounter">1/10</span>
+                    </div>
+                </div>
+
+                <!-- Certification Streak -->
+                <div class="cert-streak hidden" id="certStreak">
+                    <div class="streak-bar">
+                        <div class="streak-fill" id="streakFill"></div>
+                    </div>
+                    <span class="streak-text" id="streakText">Accuracy: 0%</span>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-number" id="questionNumber">Question 1</div>
+                    <div class="question-text" id="questionText">Loading...</div>
+                    <div class="options-grid" id="optionsList"></div>
+                    <div class="explanation-box hidden" id="explanationBox"></div>
+                </div>
+
+                <div class="quiz-controls">
+                    <div class="quiz-controls-left">
+                        <button class="btn btn-ghost btn-sm" id="prevBtn">← Previous</button>
+                        <button class="btn btn-warning btn-sm hidden" id="giveUpBtn">⚐ Give Up & Grade</button>
+                    </div>
+                    <div class="quiz-controls-right">
+                        <button class="btn btn-ghost btn-sm" id="skipBtn">Skip →</button>
+                        <button class="btn btn-primary btn-sm" id="nextBtn">Next →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Results Section ===== -->
+    <section class="results-section hidden" id="resultsSection">
+        <div class="results-container">
+            <div class="results-panel">
+                <div class="results-header">
+                    <h2 id="resultsTitle">Assessment Complete!</h2>
+                    <p class="muted" id="resultSummaryText" style="color: var(--text-secondary);"></p>
+                </div>
+
+                <div class="score-dashboard">
+                    <div class="score-card">
+                        <div class="score-ring-wrap" id="scoreRing">
+                            <svg viewBox="0 0 84 84">
+                                <circle class="score-ring-bg" cx="42" cy="42" r="38" />
+                                <circle class="score-ring-fill" cx="42" cy="42" r="38" id="scoreRingFill" />
+                            </svg>
+                            <div class="score-ring-value" id="scoreRingValue">0%</div>
+                        </div>
+                        <div class="score-label">Accuracy</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-big" id="scoreValue">0/0</div>
+                        <div class="score-label">Score</div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-big" id="timeValue">00:00</div>
+                        <div class="score-label">Time</div>
+                    </div>
+                    <div class="score-card" id="gradeItem">
+                        <div class="score-big" id="gradeValue">—</div>
+                        <div class="score-label">Grade</div>
+                    </div>
+                </div>
+
+                <!-- Certification Result Banner -->
+                <div class="cert-result hidden" id="certResult">
+                    <div class="cert-result-icon" id="certResultIcon">◆</div>
+                    <div class="cert-result-text" id="certResultText">Certification Passed!</div>
+                    <div class="cert-result-sub" id="certResultSub">You've demonstrated expert-level knowledge</div>
+                </div>
+
+                <div class="recommendation-box" id="recommendationBox">
+                    <div class="rec-title">→ AI Career Recommendation</div>
+                    <p id="recommendationText">Analyzing your results...</p>
+                </div>
+
+                <!-- Email Delivery Status -->
+                <div class="email-status hidden" id="emailStatus">
+                    <div class="email-status-icon" id="emailStatusIcon">📧</div>
+                    <div class="email-status-text" id="emailStatusText">Sending certificate to your email...</div>
+                </div>
+
+                <!-- Deep Analysis Section -->
+                <div class="deep-analysis hidden" id="deepAnalysis">
+                    <div class="deep-analysis-header">
+                        <h3>◈ Deep Performance Analysis</h3>
+                        <p class="deep-analysis-sub">AI-powered comprehensive assessment of your performance</p>
+                    </div>
+                    <div class="deep-analysis-loading" id="deepAnalysisLoading">
+                        <div class="loader" style="width:28px;height:28px;"></div>
+                        <span>Generating deep analysis with AI...</span>
+                    </div>
+                    <div class="deep-analysis-content hidden" id="deepAnalysisContent">
+                        <div class="analysis-section">
+                            <div class="analysis-verdict" id="analysisVerdict"></div>
+                        </div>
+                        <div class="analysis-grid">
+                            <div class="analysis-card analysis-strengths">
+                                <h4>✦ Strengths</h4>
+                                <ul id="analysisStrengths"></ul>
                             </div>
-                            <span class="quiz-counter" id="quizCounter">1/10</span>
+                            <div class="analysis-card analysis-improve">
+                                <h4>△ Areas to Improve</h4>
+                                <ul id="analysisImprove"></ul>
+                            </div>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>◇ Recommended Resources</h4>
+                            <div class="resources-list" id="analysisResources"></div>
+                        </div>
+                        <div class="analysis-grid">
+                            <div class="analysis-card">
+                                <h4>◎ Career Readiness</h4>
+                                <div class="readiness-level" id="readinessLevel"></div>
+                                <p id="readinessDesc"></p>
+                            </div>
+                            <div class="analysis-card">
+                                <h4>⟐ Market Insights</h4>
+                                <div class="market-stat">
+                                    <span class="market-label">Salary Range</span>
+                                    <span class="market-value" id="salaryRange">—</span>
+                                </div>
+                                <div class="market-stat">
+                                    <span class="market-label">Time to Job-Ready</span>
+                                    <span class="market-value" id="timeToReady">—</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>→ Next Steps</h4>
+                            <ol id="analysisNextSteps"></ol>
                         </div>
                     </div>
-                    <!-- Certification Streak Indicator -->
-                    <div class="cert-streak hidden" id="certStreak">
-                        <div class="streak-bar">
-                            <div class="streak-fill" id="streakFill"></div>
-                        </div>
-                        <span class="streak-text" id="streakText">Accuracy: 0%</span>
-                    </div>
-                    <div class="question-card">
-                        <div class="question-number" id="questionNumber">Question 1</div>
-                        <div class="question-text" id="questionText">Loading...</div>
-                        <div class="options-list" id="optionsList"></div>
-                        <div class="explanation-box hidden" id="explanationBox"></div>
-                    </div>
-                    <div class="quiz-controls">
-                        <div class="quiz-controls-left">
-                            <button class="btn btn-ghost btn-sm" id="prevBtn">← Previous</button>
-                            <button class="btn btn-warning btn-sm hidden" id="giveUpBtn">🏳️ Give Up & Grade</button>
-                        </div>
-                        <div class="quiz-controls-right">
-                            <button class="btn btn-ghost btn-sm" id="skipBtn">Skip →</button>
-                            <button class="btn btn-primary btn-sm" id="nextBtn">Next →</button>
-                        </div>
-                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button class="btn btn-success hidden" id="certificateBtn">◆ Download Certificate</button>
+                    <button class="btn btn-secondary btn-sm" id="downloadReportBtn">↓ Download Report</button>
+                    <button class="btn btn-ghost btn-sm" id="restartBtn">↻ Retake</button>
                 </div>
             </div>
-        </section>
 
-        <!-- ===== Results Section ===== -->
-        <section class="results-section hidden" id="resultsSection">
-            <div class="results-container">
-                <div class="glass-card">
-                    <div class="results-header">
-                        <h2 id="resultsTitle">🎉 Assessment Complete!</h2>
-                        <p class="muted" id="resultSummaryText"></p>
-                    </div>
-                    <div class="score-display">
-                        <div class="score-item">
-                            <div class="score-value" id="scoreValue">0/0</div>
-                            <div class="score-label">Score</div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-value" id="percentValue">0%</div>
-                            <div class="score-label">Accuracy</div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-value" id="timeValue">00:00</div>
-                            <div class="score-label">Time</div>
-                        </div>
-                        <div class="score-item" id="gradeItem">
-                            <div class="score-value" id="gradeValue">—</div>
-                            <div class="score-label">Grade</div>
-                        </div>
-                    </div>
+            <div class="answers-review" id="answersReview" style="margin-top: 20px;">
+                <h3>Detailed Review</h3>
+                <div id="answersListContainer"></div>
+            </div>
+        </div>
+    </section>
 
-                    <!-- Certification Result Banner -->
-                    <div class="cert-result hidden" id="certResult">
-                        <div class="cert-result-icon" id="certResultIcon">🏆</div>
-                        <div class="cert-result-text" id="certResultText">Certification Passed!</div>
-                        <div class="cert-result-sub" id="certResultSub">You've demonstrated expert-level knowledge</div>
-                    </div>
-
-                    <div class="recommendation-box" id="recommendationBox">
-                        <div class="rec-title">🔮 AI Career Recommendation</div>
-                        <p id="recommendationText">Analyzing your results...</p>
-                    </div>
-                    <div class="results-actions">
-                        <button class="btn btn-success hidden" id="certificateBtn">🏆 Download Certificate</button>
-                        <button class="btn btn-secondary btn-sm" id="downloadReportBtn">📄 Download Report</button>
-                        <button class="btn btn-ghost btn-sm" id="restartBtn">🔄 Retake</button>
-                    </div>
-                </div>
-                <div class="answers-review glass-card" style="margin-top:20px;" id="answersReview">
-                    <h3>📋 Detailed Review</h3>
-                    <div id="answersListContainer"></div>
+    <!-- ===== About Section ===== -->
+    <section class="about-section hidden" id="aboutSection">
+        <div class="about-container">
+            <div class="about-header">
+                <div class="about-avatar">AC</div>
+                <div>
+                    <h2>Abhilash Chidrala</h2>
+                    <p class="about-role">B.Tech Student · AI & Data Science</p>
                 </div>
             </div>
-        </section>
-
-        <!-- ===== About Section ===== -->
-        <section class="about-section hidden" id="aboutSection">
-            <div class="about-container glass-card">
-                <div class="about-header">
-                    <div class="about-avatar">AC</div>
-                    <div>
-                        <h2>Abhilash Chidrala</h2>
-                        <p class="about-role">B.Tech Student · AI & Data Science</p>
-                    </div>
-                </div>
-                <div class="about-bio">
-                    <p>I'm Abhilash, a B.Tech student at <span class="about-highlight">St. Martin's Engineering College, Hyderabad</span>, specializing in AI & Data Science.</p>
-                </div>
-                <div class="about-project">
-                    <h3>📌 About This Project</h3>
-                    <p>AI Career Path is an AI-powered quiz platform that generates real-time questions using the Google Gemini API. It assesses knowledge in AI, Data Science, and Machine Learning roles, provides personalized career recommendations, and awards professional certificates.</p>
-                </div>
-                <div class="about-tech">
-                    <h3>🛠 Tech Stack</h3>
-                    <div class="tech-pills">
-                        <span class="tech-pill">JavaScript</span>
-                        <span class="tech-pill">Express.js</span>
-                        <span class="tech-pill">Google Gemini AI</span>
-                        <span class="tech-pill">jsPDF</span>
-                        <span class="tech-pill">HTML5 / CSS3</span>
-                    </div>
-                </div>
-                <div class="about-links">
-                    <h3>🔗 Connect</h3>
-                    <div class="link-cards">
-                        <a href="https://github.com/Abhichidrala" target="_blank" class="link-card">
-                            <span class="link-icon">⚡</span>
-                            <span>GitHub Profile</span>
-                        </a>
-                        <a href="https://www.linkedin.com/in/abhilash-chidrala-a12111237/" target="_blank" class="link-card">
-                            <span class="link-icon">💼</span>
-                            <span>LinkedIn Profile</span>
-                        </a>
-                        <a href="https://abhilash-dev-resume.netlify.app" target="_blank" class="link-card">
-                            <span class="link-icon">📄</span>
-                            <span>Resume Builder</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="about-actions">
-                    <button class="btn btn-ghost btn-sm" id="closeAboutBtn">← Back to Home</button>
+            <div class="about-bio">
+                <p>I'm Abhilash, a B.Tech student at <span class="about-highlight">St. Martin's Engineering College,
+                        Hyderabad</span>, specializing in AI & Data Science.</p>
+            </div>
+            <div class="about-project">
+                <h3>About This Project</h3>
+                <p>AI Career Path is an AI-powered quiz platform that generates real-time questions using the Google
+                    Gemini API. It assesses knowledge in AI, Data Science, and Machine Learning roles, provides
+                    personalized career recommendations, and awards professional certificates.</p>
+            </div>
+            <div class="about-tech">
+                <h3>Tech Stack</h3>
+                <div class="tech-stack">
+                    <span class="tech-badge">JavaScript</span>
+                    <span class="tech-badge">Express.js</span>
+                    <span class="tech-badge">Google Gemini AI</span>
+                    <span class="tech-badge">jsPDF</span>
+                    <span class="tech-badge">HTML5 / CSS3</span>
                 </div>
             </div>
-        </section>
+            <div class="about-links">
+                <h3>Connect</h3>
+                <div class="link-grid">
+                    <a href="https://github.com/Abhichidrala" target="_blank" rel="noopener noreferrer"
+                        class="link-card">
+                        <span class="link-card-icon">⌘</span>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/abhilash-chidrala-a12111237/" target="_blank"
+                        rel="noopener noreferrer" class="link-card">
+                        <span class="link-card-icon">◉</span>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://abhilash-dev-resume.netlify.app" target="_blank" rel="noopener noreferrer"
+                        class="link-card">
+                        <span class="link-card-icon">◎</span>
+                        <span>Resume</span>
+                    </a>
+                </div>
+            </div>
+            <div class="about-actions">
+                <button class="btn btn-ghost btn-sm" id="closeAboutBtn">← Back to Home</button>
+            </div>
+        </div>
+    </section>
 
-        <!-- ===== Footer ===== -->
-        <footer class="app-footer">
-            <p>© 2025 AI Career Path · Built with ❤ by Abhilash · Powered by Google Gemini</p>
-        </footer>
-
+    <!-- ===== Admin Login Modal ===== -->
+    <div class="settings-overlay" id="adminLoginOverlay">
+        <div class="settings-panel" role="dialog" aria-label="Admin Login">
+            <div class="settings-title">Admin Login</div>
+            <div class="form-group">
+                <label for="adminUsernameInput">Username</label>
+                <input class="form-input" id="adminUsernameInput" placeholder="Enter admin username"
+                    autocomplete="username" />
+            </div>
+            <div class="form-group">
+                <label for="adminPasswordInput">Password</label>
+                <input class="form-input" id="adminPasswordInput" type="password" placeholder="Enter admin password"
+                    autocomplete="current-password" />
+            </div>
+            <div class="form-hint hidden" id="adminLoginError" style="color: var(--error); margin-bottom: var(--s-3);">
+                <span>✗</span> Invalid username or password
+            </div>
+            <div class="setup-actions" style="margin-top: var(--s-4);">
+                <button class="btn btn-primary" id="adminLoginSubmitBtn" style="flex: 1;">Login</button>
+                <button class="btn btn-ghost" id="adminLoginCancelBtn">Cancel</button>
+            </div>
+        </div>
     </div>
+
+    <!-- ===== Admin Panel Section ===== -->
+    <section class="setup-section hidden" id="adminSection">
+        <div class="setup-container" style="max-width: 700px;">
+            <div class="setup-card">
+                <div class="setup-header">
+                    <h2>Admin Panel</h2>
+                    <p>Test the application services, certificates, and APIs</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: var(--s-5);">
+                    <!-- Test Email Block -->
+                    <div class="analysis-section">
+                        <h4 style="color: var(--accent-text); margin-bottom: 6px;">📧 Test Email Service</h4>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: var(--s-3);">
+                            Send a quick test email to verify SMTP connections and delivery status.
+                        </p>
+                        <div style="display: flex; gap: var(--s-3); align-items: center; flex-wrap: wrap;">
+                            <input class="form-input" id="adminTestEmailInput" placeholder="recipient@example.com"
+                                type="email" style="flex: 1; min-width: 200px;" />
+                            <button class="btn btn-primary" id="adminSendTestEmailBtn">Send Test Email</button>
+                        </div>
+                        <div class="form-hint hidden" id="adminEmailStatus"
+                            style="margin-top: var(--s-3); font-size: 0.8rem;"></div>
+                    </div>
+
+                    <!-- Test Certificate Block -->
+                    <div class="analysis-section">
+                        <h4 style="color: var(--accent-text); margin-bottom: 6px;">◆ Test Certificate Generation</h4>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: var(--s-3);">
+                            Verify the PDF generation engine and download a dummy test certificate locally.
+                        </p>
+                        <button class="btn btn-secondary" id="adminTestCertBtn">Generate & Download Test
+                            Certificate</button>
+                    </div>
+
+                    <!-- Test Deep Analysis Block -->
+                    <div class="analysis-section">
+                        <h4 style="color: var(--accent-text); margin-bottom: 6px;">◈ Test Deep Performance Analysis</h4>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: var(--s-3);">
+                            Trigger a test deep-analysis report from Google Gemini to confirm API functionality.
+                        </p>
+                        <button class="btn btn-secondary" id="adminTestAnalysisBtn">Run Test Gemini Analysis</button>
+                        <div class="deep-analysis-loading hidden" id="adminAnalysisLoading"
+                            style="margin-top: var(--s-3);">
+                            <div class="loader" style="width:20px;height:20px;"></div>
+                            <span>Calling Gemini API...</span>
+                        </div>
+                        <div class="explanation-box hidden" id="adminAnalysisResult"
+                            style="margin-top: var(--s-3); white-space: pre-wrap; font-family: monospace; font-size: 0.76rem; max-height: 250px; overflow-y: auto;">
+                        </div>
+                    </div>
+
+                    <!-- Test Suite Block -->
+                    <div class="analysis-section" style="border-color: var(--success);">
+                        <h4 style="color: var(--success); margin-bottom: 6px;">⚡ Admin Test Suite (Test Everything)</h4>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: var(--s-3);">
+                            Execute all tests (Gemini generation, PDF construction, and Email delivery) in a single
+                            pipeline.
+                        </p>
+                        <div style="display: flex; gap: var(--s-3); align-items: center; flex-wrap: wrap;">
+                            <input class="form-input" id="adminSuiteEmailInput" placeholder="test-recipient@example.com"
+                                type="email" style="flex: 1; min-width: 200px;" />
+                            <button class="btn btn-success" id="adminRunSuiteBtn">Run Complete Test Suite</button>
+                        </div>
+                        <div class="explanation-box hidden" id="adminSuiteResult"
+                            style="margin-top: var(--s-3); font-size: 0.82rem; line-height: 1.6;"></div>
+                    </div>
+
+                    <!-- Branding Assets Management Block -->
+                    <div class="analysis-section" style="border-color: var(--prism-1);">
+                        <h4 style="color: var(--prism-1); margin-bottom: 6px;">⚙ Manage Branding Assets</h4>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: var(--s-3);">
+                            Upload custom images to brand the application. Changes will apply immediately across the
+                            entire site.
+                        </p>
+
+                        <div style="display: flex; flex-direction: column; gap: var(--s-4); margin-top: var(--s-2);">
+                            <!-- Logo Upload -->
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap;">
+                                <div>
+                                    <strong style="font-size: 0.88rem; color: var(--text-primary);">App Logo
+                                        (logo.png)</strong>
+                                    <p style="font-size: 0.76rem; color: var(--text-muted); margin: 0;">Upload a PNG or
+                                        JPEG logo.</p>
+                                </div>
+                                <div style="display: flex; gap: var(--s-2); align-items: center;">
+                                    <input type="file" id="adminLogoUpload" accept="image/*" style="display: none;" />
+                                    <button class="btn btn-secondary"
+                                        onclick="document.getElementById('adminLogoUpload').click()">Choose
+                                        File</button>
+                                    <button class="btn btn-primary" id="adminLogoUploadBtn" disabled>Upload
+                                        Logo</button>
+                                </div>
+                            </div>
+                            <div id="adminLogoUploadStatus"
+                                style="font-size: 0.78rem; color: var(--text-muted); margin-top: -6px;">No file chosen
+                            </div>
+
+                            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.06); margin: 2px 0;" />
+
+                            <!-- Favicon Upload -->
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap;">
+                                <div>
+                                    <strong style="font-size: 0.88rem; color: var(--text-primary);">App Favicon
+                                        (favicon.png)</strong>
+                                    <p style="font-size: 0.76rem; color: var(--text-muted); margin: 0;">Upload a PNG
+                                        icon.</p>
+                                </div>
+                                <div style="display: flex; gap: var(--s-2); align-items: center;">
+                                    <input type="file" id="adminFaviconUpload" accept="image/*"
+                                        style="display: none;" />
+                                    <button class="btn btn-secondary"
+                                        onclick="document.getElementById('adminFaviconUpload').click()">Choose
+                                        File</button>
+                                    <button class="btn btn-primary" id="adminFaviconUploadBtn" disabled>Upload
+                                        Favicon</button>
+                                </div>
+                            </div>
+                            <div id="adminFaviconUploadStatus"
+                                style="font-size: 0.78rem; color: var(--text-muted); margin-top: -6px;">No file chosen
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-actions"
+                    style="margin-top: var(--s-6); border-top: 1px solid var(--surface-border); padding-top: var(--s-4);">
+                    <button class="btn btn-ghost" id="adminExitBtn">← Exit Admin Panel</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer class="app-footer">
+        <p>© 2025 AI Career Path · Built by Abhilash · Powered by Google Gemini</p>
+    </footer>
+
+    <img src="logo.png" id="hiddenLogoImg" style="display: none;" />
     <script src="script.js"></script>
 </body>
+
 </html>

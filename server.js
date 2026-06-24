@@ -3,10 +3,12 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import nodemailer from "nodemailer";
+import fs from "fs";
 
 dotenv.config();
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 // Fix __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -16,6 +18,21 @@ app.use(express.static(__dirname));
 // ---- Gemini Setup ----
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+
+// ---- Email Transporter Setup ----
+let emailTransporter = null;
+if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  emailTransporter = nodemailer.createTransport({
+    service: process.env.EMAIL_SERVICE || 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+  console.log("📧 Email transport configured");
+} else {
+  console.log("📧 Email not configured (set EMAIL_USER, EMAIL_PASS, EMAIL_SERVICE in .env)");
+}
 
 // ---- Helper to call Gemini with retry ----
 async function callGemini(prompt, retries = 3) {
@@ -46,7 +63,8 @@ Generate exactly ${count || 10} multiple-choice questions for an AI career asses
 Role: "${role || "Data Scientist"}"
 Difficulty: "${difficulty || "intermediate"}"
 
-IMPORTANT: Each question MUST include an "explanation" field that explains why the correct answer is right (2-3 sentences, educational).
+IMPORTANT: Ensure the questions are completely new, unique, and distinct. Do NOT repeat questions from previous assessments, common templates, or standard examples. Focus on deep concepts, edge cases, and practical problems for this specific role and difficulty level.
+Each question MUST include an "explanation" field that explains why the correct answer is right (2-3 sentences, educational).
 
 Each question must have exactly 4 options.
 Return ONLY a valid JSON array, no markdown, no code fences, no extra text:
@@ -98,6 +116,228 @@ Difficulty: ${difficulty}
 Give a personalized 2-3 sentence career recommendation based on their performance. Mention specific technologies, courses, or skills they should focus on. Be encouraging and specific.`;
   const recommendation = await callGemini(prompt);
   res.json({ recommendation: recommendation || "" });
+});
+
+// ---- API: Deep Analysis (NEW) ----
+app.post("/api/deep-analysis", async (req, res) => {
+  const { name, role, difficulty, score, totalQuestions, percentage, grade, timeTaken, mode } = req.body;
+  const prompt = `
+You are an AI career assessment expert. Generate a comprehensive deep analysis report for this assessment result.
+
+Candidate: ${name}
+Role assessed: ${role}
+Difficulty level: ${difficulty}
+Mode: ${mode || 'Practice'}
+Score: ${score}/${totalQuestions} (${percentage}%)
+Grade: ${grade}
+Time taken: ${timeTaken}
+
+Generate a detailed JSON analysis with the following structure. Return ONLY valid JSON, no markdown, no code fences:
+{
+  "overallVerdict": "A 2-3 sentence overall assessment of the candidate's performance",
+  "strengths": [
+    "Specific strength point 1 based on their score and role",
+    "Specific strength point 2",
+    "Specific strength point 3"
+  ],
+  "areasToImprove": [
+    "Specific area to improve 1 with actionable advice",
+    "Specific area to improve 2 with actionable advice",
+    "Specific area to improve 3 with actionable advice"
+  ],
+  "recommendedResources": [
+    {"title": "Course or resource name", "type": "Course/Book/Tutorial", "reason": "Why this is relevant"},
+    {"title": "Course or resource name", "type": "Course/Book/Tutorial", "reason": "Why this is relevant"},
+    {"title": "Course or resource name", "type": "Course/Book/Tutorial", "reason": "Why this is relevant"}
+  ],
+  "careerReadiness": {
+    "level": "Beginner/Intermediate/Advanced/Expert",
+    "description": "2-3 sentence assessment of career readiness for this role"
+  },
+  "nextSteps": [
+    "Actionable next step 1",
+    "Actionable next step 2",
+    "Actionable next step 3"
+  ],
+  "estimatedSalaryRange": "Estimated salary range for someone at this proficiency level in this role (USD)",
+  "timeToJobReady": "Estimated time to become job-ready based on current performance"
+}
+
+Be specific to the ${role} role. Make all advice actionable and practical. Consider that ${percentage}% accuracy at ${difficulty} difficulty indicates a specific skill level.
+`;
+
+  const text = await callGemini(prompt);
+  let analysis = null;
+  try {
+    if (text) {
+      const cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+      analysis = JSON.parse(cleaned);
+    }
+  } catch {
+    console.error("Failed to parse deep analysis JSON. Raw:", text?.substring(0, 200));
+    analysis = null;
+  }
+
+  if (!analysis) {
+    console.log("⚠️ Gemini API failed or rate-limited. Serving fallback mock analysis.");
+    const mockPercentage = percentage || Math.round((score / totalQuestions) * 100);
+    const mockGrade = grade || (mockPercentage >= 90 ? 'A+' : mockPercentage >= 80 ? 'A' : mockPercentage >= 70 ? 'B+' : mockPercentage >= 60 ? 'B' : 'C');
+    analysis = getFallbackAnalysis(name, role, difficulty, score, totalQuestions, mockPercentage, mockGrade, timeTaken);
+  }
+
+  res.json({ analysis });
+});
+
+// ---- Fallback Deep Analysis Generator ----
+function getFallbackAnalysis(name, role, difficulty, score, totalQuestions, percentage, grade, timeTaken) {
+  const level = percentage >= 85 ? "Advanced" : percentage >= 60 ? "Intermediate" : "Beginner";
+  return {
+    overallVerdict: `Based on the assessment, ${name} has demonstrated a ${level} level of proficiency in ${role} concepts. Completed with a grade of ${grade} in ${timeTaken || 'a standard assessment window'}.`,
+    strengths: [
+      `Solid grasp of foundational ${role} workflows and methodology.`,
+      `Demonstrated capability in handling ${difficulty} difficulty questions.`,
+      `Consistent performance across key subject-matter areas.`
+    ],
+    areasToImprove: [
+      `Deepen practical exposure to production deployment constraints.`,
+      `Focus on performance optimization and scaling strategies for ${role} models.`,
+      `Review edge-cases and hardware-acceleration details.`
+    ],
+    recommendedResources: [
+      { "title": `Advanced ${role} Systems & Design`, "type": "Course", "reason": "Recommended for strengthening complex concepts." },
+      { "title": `AI System Architecture in Production`, "type": "Book", "reason": "To study real-world case studies." },
+      { "title": `Deep Learning and Fine-tuning Masterclass`, "type": "Tutorial", "reason": "To stay updated on cutting-edge model adjustments." }
+    ],
+    careerReadiness: {
+      "level": level,
+      "description": `${name} is showing excellent potential. Consistent practice will prepare them for professional roles.`
+    },
+    nextSteps: [
+      `Go through the detailed assessment review to identify specific mistakes.`,
+      `Apply these methodologies in hands-on portfolio projects.`,
+      `Target roles matching a ${level} profile for optimal career transition.`
+    ],
+    estimatedSalaryRange: percentage >= 85 ? "$120,000 - $150,000" : percentage >= 60 ? "$85,000 - $110,000" : "$65,000 - $80,000",
+    timeToJobReady: percentage >= 85 ? "Immediate (Job-Ready)" : percentage >= 60 ? "2-3 months" : "5-6 months"
+  };
+}
+
+// ---- API: Send Certificate Email (NEW) ----
+app.post("/api/send-certificate", async (req, res) => {
+  const { email, name, role, score, totalQuestions, percentage, certId, pdfBase64 } = req.body;
+
+  if (!emailTransporter) {
+    return res.json({ success: false, message: "Email service not configured on server. Please download your certificate manually." });
+  }
+
+  if (!email || !pdfBase64) {
+    return res.json({ success: false, message: "Missing email or certificate data." });
+  }
+
+  try {
+    const pdfBuffer = Buffer.from(pdfBase64, 'base64');
+
+    await emailTransporter.sendMail({
+      from: `"AI Career Path Pro" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: `🏆 Your AI Career Path Certificate — ${role}`,
+      html: `
+        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #08080c; color: #f0f0f4;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #a855f7; font-size: 24px; margin: 0;">AI Career Path Pro</h1>
+            <p style="color: #888; font-size: 14px; margin-top: 8px;">Professional Certification</p>
+          </div>
+          <div style="background: #13131b; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 30px; margin-bottom: 20px;">
+            <h2 style="color: #f0f0f4; font-size: 20px; margin: 0 0 16px;">Congratulations, ${name}! 🎉</h2>
+            <p style="color: #999; font-size: 15px; line-height: 1.6;">
+              You have successfully passed the <strong style="color: #a855f7;">${role}</strong> Certification Assessment with a score of <strong style="color: #34d399;">${score}/${totalQuestions} (${percentage}%)</strong>.
+            </p>
+            <p style="color: #999; font-size: 15px; line-height: 1.6; margin-top: 12px;">
+              Your verified PDF certificate is attached to this email. Certificate ID: <code style="color: #fbbf24;">${certId}</code>
+            </p>
+          </div>
+          <div style="text-align: center; color: #555; font-size: 12px; margin-top: 30px;">
+            <p>This is an automated email from AI Career Path Pro.</p>
+            <p>Powered by Google Gemini AI</p>
+          </div>
+        </div>
+      `,
+      attachments: [{
+        filename: `${name.replace(/\s+/g, '_')}_AI_Career_Certificate.pdf`,
+        content: pdfBuffer,
+        contentType: 'application/pdf'
+      }]
+    });
+
+    console.log(`📧 Certificate sent to ${email}`);
+    res.json({ success: true, message: `Certificate sent to ${email}` });
+  } catch (err) {
+    console.error("❌ Email send error:", err.message);
+    res.json({ success: false, message: `Failed to send email: ${err.message}` });
+  }
+});
+
+// ---- API: Admin Login ----
+app.post("/api/admin/login", (req, res) => {
+  const { username, password } = req.body;
+  if (username === "abhi" && password === "qwertyuiop") {
+    res.json({ success: true });
+  } else {
+    res.json({ success: false, message: "Invalid credentials." });
+  }
+});
+
+// ---- API: Admin Test Email ----
+app.post("/api/admin/test-email", async (req, res) => {
+  const { email } = req.body;
+  if (!emailTransporter) {
+    return res.json({ success: false, message: "Email service not configured. Please check your SMTP settings in .env." });
+  }
+  try {
+    await emailTransporter.sendMail({
+      from: `"AI Career Path Pro (Admin Test)" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "🧪 AI Career Path Pro — SMTP Connection Test",
+      html: `
+        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #08080c; color: #f0f0f4;">
+          <h2 style="color: #a855f7;">Connection Test Successful! 🎉</h2>
+          <p>Your SMTP mail configuration is working perfectly.</p>
+          <p>Sent at: <strong>${new Date().toLocaleString()}</strong></p>
+        </div>
+      `
+    });
+    res.json({ success: true, message: `Test email successfully sent to ${email}` });
+  } catch (err) {
+    res.json({ success: false, message: `SMTP test failed: ${err.message}` });
+  }
+});
+
+// ---- API: Admin Upload Asset ----
+app.post("/api/admin/upload-asset", (req, res) => {
+  const { username, password, filename, base64Data } = req.body;
+  if (username !== "abhi" || password !== "qwertyuiop") {
+    return res.status(401).json({ success: false, message: "Unauthorized. Invalid credentials." });
+  }
+
+  if (!filename || !base64Data) {
+    return res.status(400).json({ success: false, message: "Missing filename or base64Data payload." });
+  }
+
+  const safeFilename = path.basename(filename);
+  if (safeFilename !== "logo.png" && safeFilename !== "favicon.png") {
+    return res.status(400).json({ success: false, message: "Invalid asset destination filename." });
+  }
+
+  try {
+    const buffer = Buffer.from(base64Data, 'base64');
+    const filePath = path.join(__dirname, safeFilename);
+    fs.writeFileSync(filePath, buffer);
+    console.log(`💼 Branding asset updated: ${safeFilename}`);
+    res.json({ success: true, message: `${safeFilename} successfully updated on server.` });
+  } catch (err) {
+    console.error(`❌ Failed to update asset ${safeFilename}:`, err.message);
+    res.status(500).json({ success: false, message: `Error writing asset: ${err.message}` });
+  }
 });
 
 // ---- Start Server ----
