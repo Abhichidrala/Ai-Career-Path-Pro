@@ -22,14 +22,31 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 // ---- Email Transporter Setup ----
 let emailTransporter = null;
 if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  // Strip spaces from App Password (Gmail shows it with spaces, but works either way)
+  const cleanPass = process.env.EMAIL_PASS.replace(/\s+/g, '');
+
   emailTransporter = nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE || 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // SSL on port 465
     auth: {
       user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
+      pass: cleanPass
+    },
+    connectionTimeout: 15000,  // 15 seconds
+    greetingTimeout: 10000,
+    socketTimeout: 20000
+  });
+
+  // Verify connection on startup
+  emailTransporter.verify((err) => {
+    if (err) {
+      console.error("❌ Email transporter verification failed:", err.message);
+      console.log("💡 Check your EMAIL_USER / EMAIL_PASS in .env, and ensure 2FA + App Passwords are enabled in Google Account.");
+    } else {
+      console.log("📧 Email transport ready — SMTP connection verified ✅");
     }
   });
-  console.log("📧 Email transport configured");
 } else {
   console.log("📧 Email not configured (set EMAIL_USER, EMAIL_PASS, EMAIL_SERVICE in .env)");
 }
