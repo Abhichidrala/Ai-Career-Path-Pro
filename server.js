@@ -21,34 +21,57 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 // ---- Email Transporter Setup ----
 let emailTransporter = null;
-if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-  // Strip spaces from App Password (Gmail shows it with spaces, but works either way)
-  const cleanPass = process.env.EMAIL_PASS.replace(/\s+/g, '');
+const EMAIL_USER = process.env.EMAIL_USER;
+const EMAIL_PASS = process.env.EMAIL_PASS ? process.env.EMAIL_PASS.replace(/\s+/g, '') : '';
 
-  emailTransporter = nodemailer.createTransport({
+function createTransporter(port, secure) {
+  return nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // SSL on port 465
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: cleanPass
-    },
-    connectionTimeout: 15000,  // 15 seconds
-    greetingTimeout: 10000,
-    socketTimeout: 20000
+    port,
+    secure,                     // true for 465, false for 587
+    requireTLS: !secure,        // force STARTTLS on port 587
+    auth: { user: EMAIL_USER, pass: EMAIL_PASS },
+    tls: { rejectUnauthorized: false }, // allow self-signed / corporate proxies
+    connectionTimeout: 20000,
+    greetingTimeout: 15000,
+    socketTimeout: 25000
   });
+}
 
-  // Verify connection on startup
-  emailTransporter.verify((err) => {
+// Send mail with automatic port fallback: 587 → 465
+async function sendMailWithRetry(mailOptions) {
+  const configs = [
+    { port: 587, secure: false, label: '587/STARTTLS' },
+    { port: 465, secure: true,  label: '465/SSL' }
+  ];
+  let lastErr;
+  for (const cfg of configs) {
+    const t = createTransporter(cfg.port, cfg.secure);
+    try {
+      const info = await t.sendMail(mailOptions);
+      console.log(`📧 Email sent via port ${cfg.label}:`, info.messageId);
+      return info;
+    } catch (err) {
+      console.warn(`⚠️  Port ${cfg.label} failed: ${err.message}`);
+      lastErr = err;
+    }
+  }
+  throw lastErr;
+}
+
+if (EMAIL_USER && EMAIL_PASS) {
+  // Quick verify on startup (port 587)
+  const testTransport = createTransporter(587, false);
+  testTransport.verify((err) => {
     if (err) {
-      console.error("❌ Email transporter verification failed:", err.message);
-      console.log("💡 Check your EMAIL_USER / EMAIL_PASS in .env, and ensure 2FA + App Passwords are enabled in Google Account.");
+      console.warn('⚠️  SMTP verify (587) failed:', err.message, '— will try 465 on first send.');
     } else {
-      console.log("📧 Email transport ready — SMTP connection verified ✅");
+      console.log('📧 Email transport ready — SMTP verified on port 587 ✅');
     }
   });
+  emailTransporter = true; // flag: configured
 } else {
-  console.log("📧 Email not configured (set EMAIL_USER, EMAIL_PASS, EMAIL_SERVICE in .env)");
+  console.log('📧 Email not configured (set EMAIL_USER, EMAIL_PASS in .env)');
 }
 
 // ---- Helper to call Gemini with retry ----
@@ -254,8 +277,8 @@ app.post("/api/send-certificate", async (req, res) => {
   try {
     const pdfBuffer = Buffer.from(pdfBase64, 'base64');
 
-    await emailTransporter.sendMail({
-      from: `"AI Career Path Pro" <${process.env.EMAIL_USER}>`,
+    await sendMailWithRetry({
+      from: `"AI Career Path Pro" <${EMAIL_USER}>`,
       to: email,
       subject: `🏆 Your AI Career Path Certificate — ${role}`,
       html: `
@@ -311,8 +334,8 @@ app.post("/api/admin/test-email", async (req, res) => {
     return res.json({ success: false, message: "Email service not configured. Please check your SMTP settings in .env." });
   }
   try {
-    await emailTransporter.sendMail({
-      from: `"AI Career Path Pro (Admin Test)" <${process.env.EMAIL_USER}>`,
+    await sendMailWithRetry({
+      from: `"AI Career Path Pro (Admin Test)" <${EMAIL_USER}>`,
       to: email,
       subject: "🧪 AI Career Path Pro — SMTP Connection Test",
       html: `
